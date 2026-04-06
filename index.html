@@ -882,45 +882,47 @@
 
     <script>
 window.addEventListener('load', () => {
-    console.log("Strona załadowana, sprawdzam token...");
-    
-    // Wyciągamy parametry z hash (#)
+    // 1. Pobieramy dane z HASH (#), nie z SEARCH (?)
     const hash = window.location.hash.substring(1);
-    const params = new URLSearchParams(hash);
+    window.location.hash
     const accessToken = params.get('access_token');
 
     if (accessToken) {
-        console.log("Znaleziono token! Pobieram dane z Discorda...");
-        
-        // Blokujemy ekran ładowania (jeśli go masz), żeby nie zasłaniał efektu
-        const loader = document.querySelector('.loader-wrapper'); 
-        if(loader) loader.style.display = 'none';
+        console.log("Token znaleziony, łączę z Discordem...");
 
         fetch('https://discord.com/api/users/@me', {
-            headers: { authorization: `Bearer ${accessToken}` }
+            headers: {
+                authorization: `Bearer ${accessToken}`,
+            },
         })
-        .then(res => {
-            if (!res.ok) throw new Error("Błąd API Discorda: " + res.status);
-            return res.json();
+        .then(result => {
+            if (!result.ok) throw new Error("Problem z autoryzacją Discord");
+            return result.json();
         })
-        .then(user => {
-            console.log("Zalogowano jako:", user.username);
-            
-            // Podmiana UI
-            document.getElementById('loginBtn').style.display = 'none';
-            document.getElementById('userInfo').style.display = 'flex';
-            document.getElementById('userName').innerText = user.username;
-            document.getElementById('userAvatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
-            
-            // Czyścimy URL bez przeładowania strony
-            window.history.replaceState({}, document.title, window.location.pathname);
+        .then(response => {
+            const { username, avatar, id } = response;
+
+            // Upewnij się, że te ID istnieją w Twoim HTML!
+            const nameElem = document.getElementById('userName');
+            const avatarElem = document.getElementById('userAvatar');
+            const loginBtn = document.getElementById('loginBtn');
+            const userInfo = document.getElementById('userInfo');
+
+            if (nameElem && avatarElem && loginBtn && userInfo) {
+                loginBtn.style.display = 'none';
+                userInfo.style.display = 'flex';
+                nameElem.innerText = username;
+                avatarElem.src = `https://cdn.discordapp.com/avatars/${id}/${avatar}.png`;
+                
+                // Czyścimy pasek adresu z tokena dla bezpieczeństwa
+                window.history.replaceState({}, document.title, window.location.pathname);
+            } else {
+                console.error("Błąd: Nie znaleziono elementów userInfo/userName w HTML!");
+            }
         })
         .catch(err => {
             console.error("Szczegóły błędu:", err);
-            alert("Błąd logowania! Sprawdź konsolę (F12)");
         });
-    } else {
-        console.log("Brak tokena w adresie URL.");
     }
 });
 </script>
