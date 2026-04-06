@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WipeRP - Najlepszy Serwer FiveM</title>
+    <title>WazeRP - Najlepszy Serwer FiveM</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -424,7 +424,7 @@
         <div class="loader-particles" id="loaderParticles"></div>
         <div class="loader-content">
             <div>
-                <img src="assets/images/logo.png" alt="WipeRP" class="loader-logo-img">
+                <img src="assets/images/logo.png" alt="WazeRP" class="loader-logo-img">
                 <p class="loader-tagline">Nowy wymiar roleplay</p>
             </div>
             <div class="loader-progress-container">
@@ -437,7 +437,7 @@
     <!-- HEADER -->
     <header class="header" id="header">
         <div class="container">
-            <a href="#hero" class="logo"><img src="assets/images/logo.png" alt="WipeRP" class="logo-img"></a>
+            <a href="#hero" class="logo"><img src="assets/images/logo.png" alt="WazeRP" class="logo-img"></a>
             <nav class="nav">
                 <ul class="nav-menu" id="navMenu">
                     <li><a href="#hero" class="nav-link">Start</a></li>
@@ -448,9 +448,14 @@
                     <li><a href="#systemy" class="nav-link">Systemy</a></li>
                     <li><a href="#ekipa" class="nav-link">Ekipa</a></li>
                 </ul>
-                <div class="nav-auth" id="navAuth">
-                    <button class="nav-cta" onclick="testLogin()"><i class="fas fa-sign-in-alt"></i> Panel HC</button>
-                </div>
+                <a href="https://discord.com/api/oauth2/authorize?client_id=TWOJ_CLIENT_ID&redirect_uri=https%3A%2F%2Ftwoj-nick.github.io%2F&response_type=token&scope=identify" class="nav-auth" id="loginBtn">
+    <i class="fab fa-discord"></i> <span id="loginTxt">ZALOGUJ</span>
+</a>
+
+<div id="userInfo" style="display: none; align-items: center; gap: 10px; padding: 5px 15px; background: rgba(255,255,255,0.05); border-radius: 10px; border: 1px solid var(--border);">
+    <img id="userAvatar" src="" style="width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--accent);">
+    <span id="userName" style="color: var(--text-white); font-weight: 600; font-size: 13px; text-transform: uppercase;"></span>
+</div>
                 <div class="user-menu" id="userMenu">
                     <div class="user-dropdown">
                         <div class="user-avatar"><img src="https://cdn.discordapp.com/embed/avatars/0.png" alt="" id="userAvatarImg"></div>
@@ -472,7 +477,7 @@
         <div class="hero-overlay"></div>
         <div class="hero-content" data-aos="fade-up">
             <div class="hero-badge"><i class="fas fa-circle"></i> Serwer Online • 128 Graczy</div>
-            <h1 class="hero-title">POCZUJ KLIMAT <span class="accent">WIPERP</span></h1>
+            <h1 class="hero-title">POCZUJ KLIMAT <span class="accent">WazeRP</span></h1>
             <p class="hero-description">Dołącz do najbardziej zaawansowanego serwera FiveM w Polsce.</p>
             <div class="hero-buttons">
                 <a href="#podania" class="btn btn-primary"><i class="fas fa-file-alt"></i> Złóż Podanie</a>
@@ -494,7 +499,7 @@
         <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1920" class="section-bg" alt="">
         <div class="section-bg-overlay"></div>
         <div class="section-container">
-            <div class="hc-header-panel"><div class="hc-welcome"><h2>👋 Witaj, <span id="hcName">Admin</span>!</h2><p>Panel zarządzania WipeRP</p></div><div class="hc-badge"><i class="fas fa-crown"></i><span id="hcRole">Zarząd</span></div></div>
+            <div class="hc-header-panel"><div class="hc-welcome"><h2>👋 Witaj, <span id="hcName">Admin</span>!</h2><p>Panel zarządzania WazeRP</p></div><div class="hc-badge"><i class="fas fa-crown"></i><span id="hcRole">Zarząd</span></div></div>
             <div class="hc-stats-grid">
                 <div class="hc-stat-card"><div class="hc-stat-icon"><i class="fas fa-file-alt"></i></div><div class="hc-stat-value">23</div><div class="hc-stat-label">Oczekujące podania</div></div>
                 <div class="hc-stat-card"><div class="hc-stat-icon"><i class="fas fa-users"></i></div><div class="hc-stat-value">1,247</div><div class="hc-stat-label">Aktywni gracze</div></div>
@@ -589,7 +594,7 @@
     <div class="modal-overlay" id="rulesModal">
         <div class="modal wide">
             <button class="modal-close" onclick="closeRules()"><i class="fas fa-times"></i></button>
-            <div class="modal-header"><div class="modal-icon"><i class="fas fa-book"></i></div><h2 class="modal-title">Regulamin WipeRP</h2><p class="modal-subtitle">Zapoznaj się z zasadami serwera</p></div>
+            <div class="modal-header"><div class="modal-icon"><i class="fas fa-book"></i></div><h2 class="modal-title">Regulamin WazeRP</h2><p class="modal-subtitle">Zapoznaj się z zasadami serwera</p></div>
             <div class="modal-body">
                 <div class="rules-tabs">
                     <button class="rules-tab active" onclick="switchRules('ogolne',this)"><i class="fas fa-book"></i> Ogólne</button>
@@ -745,12 +750,12 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-main">
-                <div class="footer-brand"><a href="#hero" class="logo"><img src="assets/images/logo.png" alt="WipeRP" class="logo-img"></a><p>Najlepszy serwer FiveM RP w Polsce.</p><div class="footer-socials"><a href="#" class="footer-social"><i class="fab fa-discord"></i></a><a href="#" class="footer-social"><i class="fab fa-youtube"></i></a><a href="#" class="footer-social"><i class="fab fa-tiktok"></i></a></div></div>
+                <div class="footer-brand"><a href="#hero" class="logo"><img src="assets/images/logo.png" alt="WazeRP" class="logo-img"></a><p>Najlepszy serwer FiveM RP w Polsce.</p><div class="footer-socials"><a href="#" class="footer-social"><i class="fab fa-discord"></i></a><a href="#" class="footer-social"><i class="fab fa-youtube"></i></a><a href="#" class="footer-social"><i class="fab fa-tiktok"></i></a></div></div>
                 <div class="footer-column"><h4>Nawigacja</h4><div class="footer-links"><a href="#hero" class="footer-link">Start</a><a href="#podania" class="footer-link">Podania</a><a href="#sklep" class="footer-link">Sklep</a><a href="#systemy" class="footer-link">Systemy</a></div></div>
                 <div class="footer-column"><h4>Zasoby</h4><div class="footer-links"><span class="footer-link" onclick="openRules()" style="cursor:pointer">Regulamin</span><a href="#ekipa" class="footer-link">Ekipa</a><a href="#" class="footer-link">FAQ</a></div></div>
-                <div class="footer-column"><h4>Kontakt</h4><div class="footer-links"><a href="#" class="footer-link"><i class="fab fa-discord"></i> Discord</a><a href="mailto:kontakt@wiperp.pl" class="footer-link"><i class="fas fa-envelope"></i> Email</a></div></div>
+                <div class="footer-column"><h4>Kontakt</h4><div class="footer-links"><a href="#" class="footer-link"><i class="fab fa-discord"></i> Discord</a><a href="mailto:kontakt@WazeRP.pl" class="footer-link"><i class="fas fa-envelope"></i> Email</a></div></div>
             </div>
-            <div class="footer-bottom"><p class="footer-copyright">© 2024 <a href="#hero">WipeRP</a>. Wszystkie prawa zastrzeżone.</p><div class="footer-legal"><span onclick="openRules()" style="cursor:pointer;color:var(--text-gray);font-size:12px">Regulamin</span><a href="#">Prywatność</a></div></div>
+            <div class="footer-bottom"><p class="footer-copyright">© 2026 <a href="#hero">WazeRP</a>. Wszystkie prawa zastrzeżone.</p><div class="footer-legal"><span onclick="openRules()" style="cursor:pointer;color:var(--text-gray);font-size:12px">Regulamin</span><a href="#">Prywatność</a></div></div>
         </div>
     </footer>
 
@@ -807,7 +812,7 @@
     const webhookURL = "https://discord.com/api/webhooks/1490811034167152731/DmfzrBp8kAUInDJ2PDKA4rU6MEIRxZeInLI7d4qTGA6dz-gssU5CYuKoMo85cie2BYyA";
 
     const embed = {
-        username: "WipeRP - System Podań",
+        username: "WazeRP - System Podań",
         embeds: [{
             title: `📩 Nowe Podanie: ${data.frakcja}`,
             color: 2617077, 
@@ -817,7 +822,7 @@
                 { name: "🎮 Discord", value: data.dc, inline: true },
                 { name: "📝 Doświadczenie", value: data.exp }
             ],
-            footer: { text: "Wysłano ze strony WipeRP" },
+            footer: { text: "Wysłano ze strony WazeRP" },
             timestamp: new Date()
         }]
     };
@@ -858,10 +863,10 @@
         function switchRules(tab,btn){document.querySelectorAll('.rules-content').forEach(c=>c.classList.remove('active'));document.querySelectorAll('.rules-tab').forEach(t=>t.classList.remove('active'));document.getElementById('rules-'+tab).classList.add('active');if(btn)btn.classList.add('active')}
 
         // TEST LOGIN
-        function testLogin(){const name=prompt('Wpisz nick (test logowania):');if(!name)return;localStorage.setItem('wiperp_user',JSON.stringify({name,role:'Zarząd'}));updateLogin();showToast('Zalogowano jako '+name+'!','success')}
-        function logout(){localStorage.removeItem('wiperp_user');document.getElementById('navAuth').classList.remove('hidden');document.getElementById('userMenu').classList.remove('active');document.querySelector('.hc-panel').classList.remove('active');showToast('Wylogowano!','info')}
-        function updateLogin(){const u=JSON.parse(localStorage.getItem('wiperp_user'));if(!u)return;document.getElementById('navAuth').classList.add('hidden');document.getElementById('userMenu').classList.add('active');document.getElementById('userName').textContent=u.name;document.getElementById('userRoleText').textContent=u.role;document.getElementById('hcName').textContent=u.name;document.getElementById('hcRole').textContent=u.role;document.querySelector('.hc-panel').classList.add('active')}
-        if(localStorage.getItem('wiperp_user'))updateLogin();
+        function testLogin(){const name=prompt('Wpisz nick (test logowania):');if(!name)return;localStorage.setItem('WazeRP_user',JSON.stringify({name,role:'Zarząd'}));updateLogin();showToast('Zalogowano jako '+name+'!','success')}
+        function logout(){localStorage.removeItem('WazeRP_user');document.getElementById('navAuth').classList.remove('hidden');document.getElementById('userMenu').classList.remove('active');document.querySelector('.hc-panel').classList.remove('active');showToast('Wylogowano!','info')}
+        function updateLogin(){const u=JSON.parse(localStorage.getItem('WazeRP_user'));if(!u)return;document.getElementById('navAuth').classList.add('hidden');document.getElementById('userMenu').classList.add('active');document.getElementById('userName').textContent=u.name;document.getElementById('userRoleText').textContent=u.role;document.getElementById('hcName').textContent=u.name;document.getElementById('hcRole').textContent=u.role;document.querySelector('.hc-panel').classList.add('active')}
+        if(localStorage.getItem('WazeRP_user'))updateLogin();
 
         // LIGHTBOX
         document.querySelectorAll('.gallery-slide').forEach(s=>s.addEventListener('click',()=>{document.getElementById('lightboxImg').src=s.dataset.img;document.getElementById('lightbox').classList.add('active');document.body.style.overflow='hidden'}));
@@ -872,7 +877,31 @@
         // ESC
         document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeApp();closeRules();document.getElementById('lightbox').classList.remove('active');document.body.classList.remove('modal-open');document.body.style.overflow=''}});
 
-        console.log('%c WipeRP ','background:linear-gradient(90deg,#28C0C7;,#ff3350);color:#fff;font-size:28px;font-weight:bold;padding:12px 25px;border-radius:8px');
+        console.log('%c WazeRP ','background:linear-gradient(90deg,#28C0C7;,#ff3350);color:#fff;font-size:28px;font-weight:bold;padding:12px 25px;border-radius:8px');
     </script>
+    <script>
+window.onload = () => {
+    // Sprawdzamy czy w adresie URL jest token z Discorda
+    const fragment = new URLSearchParams(window.location.hash.slice(1));
+    const accessToken = fragment.get('access_token');
+
+    if (accessToken) {
+        // Jeśli jest token, ukrywamy przycisk i pokazujemy info o użytkowniku
+        document.getElementById('loginBtn').style.display = 'none';
+        document.getElementById('userInfo').style.display = 'flex';
+
+        fetch('https://discord.com/api/users/@me', {
+            headers: { authorization: `Bearer ${accessToken}` },
+        })
+        .then(res => res.json())
+        .then(user => {
+            document.getElementById('userName').innerText = user.username;
+            document.getElementById('userAvatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+        })
+        .catch(err => console.error("Błąd logowania:", err));
+    }
+};
+</script>
+
 </body>
 </html>
