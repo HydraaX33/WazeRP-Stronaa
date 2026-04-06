@@ -1,0 +1,878 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WipeRP - Najlepszy Serwer FiveM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
+
+    <style>
+        :root {
+           --bg-dark: #0a0a0a;
+            --bg-darker: #050505;
+            --bg-glass: rgba(10, 10, 10, 0.88);
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --accent: #27EEF5;
+            --accent-rgb: 39, 238, 245;
+            --accent-light: #6df5fa; 
+            --accent-dark: #23ABB0;
+            --gold: #ffd700;
+            --gold-rgb: 255, 215, 0;
+            --diamond: #00c8ff;
+            --diamond-rgb: 0, 200, 255;
+            --emerald: #2ed573;
+            --purple: #a855f7;
+            --discord-color: #5865F2;
+            --success: #2ed573;
+            --warning: #ffa502;
+            --danger: #00a9ec;
+            --text-white: #ffffff;
+            --text-gray: #b0b0b0;
+            --text-dark: #666;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(39, 238, 245, 0.5);
+            --glow-sm: 0 0 10px rgba(39, 238, 245, 0.5);
+            --glow-md: 0 0 20px rgba(39, 238, 245, 0.6);
+            --glow-lg: 0 0 40px rgba(39, 238, 245, 0.7);
+            --font-h: 'Outfit', sans-serif;
+            --font-b: 'Inter', sans-serif;
+            --tr-fast: 0.2s cubic-bezier(0.4,0,0.2,1);
+            --tr-med: 0.4s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth;scroll-padding-top:100px}
+        body{font-family:var(--font-b);background:var(--bg-dark);color:var(--text-white);line-height:1.6;overflow-x:hidden}
+        body.loading{overflow:hidden}
+        body.modal-open{overflow:hidden}
+        a{text-decoration:none;color:inherit}
+        ul{list-style:none}
+        img{max-width:100%;display:block}
+        button{cursor:pointer;border:none;outline:none;font-family:var(--font-b)}
+
+        /* ============ LOADER ============ */
+        .loader{position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;display:flex;align-items:center;justify-content:center;background:var(--bg-darker);transition:opacity .8s,visibility .8s}
+        .loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+        .loader-video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:.35;filter:brightness(.4) blur(2px)}
+        .loader-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at center,transparent,var(--bg-darker) 70%)}
+        .loader-content{position:relative;z-index:2;text-align:center}
+        .loader-logo-img{height:150px;width:auto;margin:0 auto;animation:logoGlow 2s ease-in-out infinite;filter:drop-shadow(0 0 30px rgba(230,0,38,.8))}
+        .loader-logo-text{font-family:var(--font-h);font-size:clamp(50px,12vw,90px);font-weight:900;color:var(--text-white);letter-spacing:4px;animation:logoGlow 2s ease-in-out infinite}
+        .loader-logo-text span{color:var(--accent)}
+        @keyframes logoGlow{0%,100%{filter:drop-shadow(0 0 20px rgba(3, 253, 241, 0.6));transform:scale(1)}50%{filter:drop-shadow(0 0 40px rgba(230,0,38,.9));transform:scale(1.02)}}
+        .loader-tagline{font-size:14px;color:var(--text-gray);text-transform:uppercase;letter-spacing:6px;margin-top:25px;opacity:0;animation:fadeUp 1s ease forwards .5s}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        .loader-progress-container{width:300px;margin:30px auto 0}
+        .loader-progress-bar{width:100%;height:3px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden}
+        .loader-progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-light));border-radius:10px;box-shadow:var(--glow-sm);transition:width .3s}
+        .loader-progress-text{display:flex;justify-content:space-between;margin-top:12px;font-size:11px;color:var(--text-gray);text-transform:uppercase;letter-spacing:2px}
+        .loader-particles{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden}
+        .loader-particle{position:absolute;width:3px;height:3px;background:var(--accent);border-radius:50%;opacity:0;animation:pFloat 4s ease-in-out infinite}
+        @keyframes pFloat{0%{opacity:0;transform:translateY(100vh) scale(0)}10%{opacity:.6}90%{opacity:.6}100%{opacity:0;transform:translateY(-100vh) scale(1)}}
+
+        /* ============ HEADER ============ */
+        .header{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:18px 0;transition:var(--tr-med)}
+        .header.scrolled{padding:10px 0;background:var(--bg-glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+        .header .container{max-width:1400px;margin:0 auto;padding:0 40px;display:flex;justify-content:space-between;align-items:center}
+        .logo{display:flex;align-items:center;transition:var(--tr-fast);gap:10px}
+        .logo-img{height:125px;width:auto;filter:drop-shadow(0 0 10px rgba(20, 171, 182, 0.5));transition:var(--tr-fast)}
+        .logo:hover{transform:scale(1.05)}
+        .logo:hover .logo-img{filter:drop-shadow(0 0 20px #0db4d1cc)}
+        .logo-text{font-family:var(--font-h);font-size:24px;font-weight:800;color:var(--text-white);letter-spacing:2px}
+        .logo-text span{color:var(--accent);text-shadow:var(--glow-sm)}
+        .nav{display:flex;align-items:center;gap:30px}
+        .nav-menu{display:flex;gap:28px}
+        .nav-link{font-size:12px;font-weight:500;color:var(--text-gray);text-transform:uppercase;letter-spacing:2px;position:relative;padding:10px 0;transition:var(--tr-fast);cursor:pointer}
+        .nav-link::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--accent);box-shadow:0 0 8px rgba(230,0,38,.5);transition:var(--tr-fast)}
+        .nav-link:hover{color:var(--text-white)}
+        .nav-link:hover::before{width:100%}
+        .nav-cta{display:flex;align-items:center;gap:8px;padding:12px 24px;background:var(--accent);color:var(--text-white);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;border-radius:6px;box-shadow:var(--glow-md);transition:var(--tr-fast)}
+        .nav-cta:hover{transform:translateY(-3px);box-shadow:var(--glow-lg);background:var(--accent-light)}
+        .menu-toggle{display:none;flex-direction:column;gap:5px;padding:10px;cursor:pointer}
+        .menu-toggle span{width:26px;height:2px;background:var(--text-white);border-radius:2px;transition:var(--tr-fast)}
+
+        /* User Menu */
+        .user-menu{display:none;align-items:center}
+        .user-menu.active{display:flex}
+        .user-avatar{width:42px;height:42px;border-radius:50%;border:2px solid var(--accent);overflow:hidden;cursor:pointer;transition:var(--tr-fast)}
+        .user-avatar img{width:100%;height:100%;object-fit:cover}
+        .user-avatar:hover{transform:scale(1.1);box-shadow:var(--glow-sm)}
+        .user-dropdown{position:relative}
+        .user-dropdown-menu{position:absolute;top:100%;right:0;margin-top:12px;background:rgba(15,15,15,.95);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:14px;padding:12px;min-width:200px;opacity:0;visibility:hidden;transform:translateY(-10px);transition:var(--tr-fast);z-index:100}
+        .user-dropdown:hover .user-dropdown-menu{opacity:1;visibility:visible;transform:translateY(0)}
+        .user-info{padding:10px;border-bottom:1px solid var(--border);margin-bottom:8px}
+        .user-name{font-weight:600;color:var(--text-white);font-size:14px}
+        .user-role{font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:1px}
+        .user-dropdown-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;color:var(--text-gray);font-size:13px;transition:var(--tr-fast);cursor:pointer}
+        .user-dropdown-item:hover{background:rgba(var(--accent-rgb),.1);color:var(--text-white)}
+        .user-dropdown-item i{width:18px;text-align:center;color:var(--accent)}
+        .user-dropdown-item.danger{color:var(--danger)}
+        .user-dropdown-item.danger i{color:var(--danger)}
+        .nav-auth.hidden{display:none}
+
+        /* ============ HERO ============ */
+        .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:120px 40px}
+        .hero-video-bg{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:.35;filter:brightness(.5)}
+        .hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at 30% 20%,rgba(var(--accent-rgb),.12),transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(var(--accent-rgb),.08),transparent 50%),linear-gradient(180deg,transparent,var(--bg-dark))}
+        .hero-content{position:relative;z-index:2;text-align:center;max-width:1000px}
+        .hero-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(var(--accent-rgb),.1);border:1px solid rgba(var(--accent-rgb),.3);padding:12px 28px;border-radius:50px;font-size:13px;font-weight:500;color:var(--accent);text-transform:uppercase;letter-spacing:3px;margin-bottom:40px}
+        .hero-badge i{font-size:10px;animation:pulse 2s infinite}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+        .hero-title{font-family:var(--font-h);font-size:clamp(44px,10vw,95px);font-weight:900;line-height:1.05;margin-bottom:30px;color:var(--text-white)}
+        .hero-title .accent{color:var(--accent);text-shadow:0 0 40px rgba(var(--accent-rgb),.6)}
+        .hero-description{font-size:19px;color:var(--text-gray);max-width:650px;margin:0 auto 50px;line-height:1.8}
+        .hero-buttons{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:60px}
+        .btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:18px 40px;font-family:var(--font-b);font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:1px;border-radius:6px;transition:var(--tr-fast);border:none;cursor:pointer}
+        .btn-primary{background:var(--accent);color:var(--text-white);box-shadow:var(--glow-md)}
+        .btn-primary:hover{transform:translateY(-4px);box-shadow:var(--glow-lg);background:var(--accent-light)}
+        .btn-secondary{background:transparent;color:var(--text-white);border:2px solid rgba(255,255,255,.2)}
+        .btn-secondary:hover{border-color:var(--accent);background:rgba(var(--accent-rgb),.1);transform:translateY(-4px)}
+        .btn-discord{background:var(--discord-color);color:var(--text-white);box-shadow:0 0 20px rgba(88,101,242,.5)}
+        .btn-discord:hover{transform:translateY(-4px);box-shadow:0 0 40px rgba(88,101,242,.7)}
+        .hero-stats{display:flex;justify-content:center;gap:60px;flex-wrap:wrap}
+        .hero-stat{text-align:center}
+        .hero-stat-number{font-family:var(--font-h);font-size:46px;font-weight:800;color:var(--accent);text-shadow:var(--glow-sm);line-height:1}
+        .hero-stat-label{font-size:12px;color:var(--text-gray);text-transform:uppercase;letter-spacing:2px;margin-top:8px}
+        .hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--text-gray);font-size:11px;text-transform:uppercase;letter-spacing:3px;animation:bounce 2s infinite}
+        .hero-scroll i{font-size:18px;color:var(--accent)}
+        @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-10px)}}
+
+        /* ============ SECTIONS ============ */
+        .section{padding:130px 40px;position:relative;overflow:hidden}
+        .section-bg{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:.06;filter:brightness(.4)}
+        .section-bg-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,var(--bg-dark),rgba(var(--accent-rgb),.02),var(--bg-dark))}
+        .section-container{max-width:1400px;margin:0 auto;position:relative;z-index:2}
+        .section-header{text-align:center;margin-bottom:70px}
+        .section-label{display:inline-flex;align-items:center;gap:12px;color:var(--accent);font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:4px;margin-bottom:20px}
+        .section-label::before,.section-label::after{content:'';width:30px;height:1px;background:var(--accent)}
+        .section-title{font-family:var(--font-h);font-size:clamp(34px,5vw,56px);font-weight:800;color:var(--text-white);margin-bottom:20px}
+        .section-description{font-size:17px;color:var(--text-gray);max-width:600px;margin:0 auto;line-height:1.8}
+
+        /* ============ GALLERY ============ */
+        .gallery-slider{padding:20px 0 60px}
+        .gallery-slide{border-radius:16px;overflow:hidden;position:relative;cursor:pointer;transition:var(--tr-med)}
+        .gallery-slide:hover{transform:scale(1.02)}
+        .gallery-slide img{width:100%;height:280px;object-fit:cover;transition:var(--tr-med)}
+        .gallery-slide:hover img{transform:scale(1.1)}
+        .gallery-slide-overlay{position:absolute;bottom:0;left:0;right:0;padding:25px;background:linear-gradient(transparent,rgba(0,0,0,.9));transform:translateY(100%);transition:var(--tr-med)}
+        .gallery-slide:hover .gallery-slide-overlay{transform:translateY(0)}
+        .gallery-slide-title{font-family:var(--font-h);font-size:16px;font-weight:700;color:var(--text-white)}
+        .swiper-pagination-bullet{width:10px;height:10px;background:var(--text-gray);opacity:.5}
+        .swiper-pagination-bullet-active{background:var(--accent);opacity:1;box-shadow:var(--glow-sm)}
+
+        /* ============ APPLICATIONS ============ */
+        .applications-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:22px}
+        .application-card{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:32px;position:relative;overflow:hidden;transition:var(--tr-med)}
+        .application-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--accent),transparent);transform:scaleX(0);transform-origin:left;transition:var(--tr-med)}
+        .application-card:hover{transform:translateY(-8px);border-color:var(--border-hover);box-shadow:0 20px 40px rgba(0,0,0,.3),0 0 15px rgba(var(--accent-rgb),.15)}
+        .application-card:hover::before{transform:scaleX(1)}
+        .application-icon{width:60px;height:60px;background:rgba(var(--accent-rgb),.1);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--accent);margin-bottom:20px;transition:var(--tr-fast)}
+        .application-card:hover .application-icon{transform:scale(1.1) rotate(5deg);box-shadow:var(--glow-md)}
+        .application-status{position:absolute;top:20px;right:20px;padding:6px 12px;border-radius:16px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+        .status-open{background:rgba(46,213,115,.15);color:#2ed573;border:1px solid rgba(46,213,115,.3)}
+        .status-closed{background:rgba(255,71,87,.15);color:#ff4757;border:1px solid rgba(255,71,87,.3)}
+        .status-limited{background:rgba(255,165,2,.15);color:#ffa502;border:1px solid rgba(255,165,2,.3)}
+        .application-title{font-family:var(--font-h);font-size:20px;font-weight:700;color:var(--text-white);margin-bottom:8px}
+        .application-description{font-size:13px;color:var(--text-gray);line-height:1.7;margin-bottom:18px}
+        .application-meta{display:flex;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+        .application-meta-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-gray)}
+        .application-meta-item i{color:var(--accent)}
+        .application-btn{width:100%;padding:13px;background:rgba(var(--accent-rgb),.1);border:1px solid rgba(var(--accent-rgb),.3);border-radius:10px;color:var(--accent);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:8px;transition:var(--tr-fast)}
+        .application-btn:hover{background:var(--accent);color:var(--text-white);box-shadow:var(--glow-md)}
+        .application-btn.disabled{opacity:.5;cursor:not-allowed}
+        .application-btn.disabled:hover{background:rgba(var(--accent-rgb),.1);color:var(--accent);box-shadow:none}
+
+        /* ============ MODAL ============ */
+        .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);backdrop-filter:blur(10px);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:var(--tr-med)}
+        .modal-overlay.active{opacity:1;visibility:visible}
+        .modal{background:var(--bg-dark);border:1px solid var(--border);border-radius:20px;width:100%;max-width:650px;max-height:90vh;overflow-y:auto;position:relative;transform:scale(.9) translateY(20px);transition:var(--tr-med)}
+        .modal-overlay.active .modal{transform:scale(1) translateY(0)}
+        .modal.wide{max-width:900px}
+        .modal::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:50%;height:3px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+        .modal-header{padding:35px 35px 0;text-align:center}
+        .modal-icon{width:70px;height:70px;background:rgba(var(--accent-rgb),.1);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:32px;color:var(--accent);margin:0 auto 18px}
+        .modal-title{font-family:var(--font-h);font-size:24px;font-weight:700;color:var(--text-white);margin-bottom:8px}
+        .modal-subtitle{color:var(--text-gray);font-size:14px}
+        .modal-close{position:absolute;top:18px;right:18px;width:40px;height:40px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--text-gray);font-size:18px;cursor:pointer;transition:var(--tr-fast)}
+        .modal-close:hover{background:var(--accent);color:var(--text-white);transform:rotate(90deg)}
+        .modal-body{padding:25px 35px}
+        .modal-form-group{margin-bottom:20px}
+        .modal-form-label{display:block;font-size:12px;font-weight:500;color:var(--text-gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+        .modal-form-label span{color:var(--accent)}
+        .modal-form-input,.modal-form-textarea,.modal-form-select{width:100%;padding:14px 18px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;font-family:var(--font-b);font-size:14px;color:var(--text-white);transition:var(--tr-fast)}
+        .modal-form-input:focus,.modal-form-textarea:focus,.modal-form-select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(var(--accent-rgb),.1)}
+        .modal-form-input::placeholder,.modal-form-textarea::placeholder{color:var(--text-dark)}
+        .modal-form-textarea{min-height:100px;resize:vertical}
+        .modal-form-select{cursor:pointer;appearance:none}
+        .modal-form-select option{background:var(--bg-dark)}
+        .modal-footer{padding:0 35px 35px}
+        .modal-submit{width:100%;padding:16px;background:var(--accent);color:var(--text-white);border:none;border-radius:10px;font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:1px;cursor:pointer;box-shadow:var(--glow-md);transition:var(--tr-fast);display:flex;align-items:center;justify-content:center;gap:8px}
+        .modal-submit:hover{transform:translateY(-3px);box-shadow:var(--glow-lg)}
+        .modal-info{margin-top:18px;padding:14px;background:rgba(var(--accent-rgb),.08);border-radius:10px;display:flex;align-items:flex-start;gap:10px}
+        .modal-info i{color:var(--accent);font-size:16px;margin-top:2px}
+        .modal-info p{font-size:12px;color:var(--text-gray);line-height:1.6}
+
+        /* ============ REGULAMIN MODAL ============ */
+        .rules-tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:30px;padding:0 10px}
+        .rules-tab{padding:12px 20px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;color:var(--text-gray);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:var(--tr-fast);display:flex;align-items:center;gap:7px}
+        .rules-tab:hover{border-color:var(--border-hover);color:var(--text-white)}
+        .rules-tab.active{background:var(--accent);border-color:var(--accent);color:var(--text-white);box-shadow:var(--glow-sm)}
+        .rules-tab i{font-size:14px}
+        .rules-content{display:none;animation:fadeUp .4s ease}
+        .rules-content.active{display:block}
+        .rule-item{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:12px;display:flex;gap:18px;align-items:flex-start;transition:var(--tr-fast)}
+        .rule-item:hover{border-color:var(--border-hover);background:rgba(var(--accent-rgb),.03)}
+        .rule-number{flex-shrink:0;width:40px;height:40px;background:rgba(var(--accent-rgb),.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-size:16px;font-weight:800;color:var(--accent)}
+        .rule-text h4{font-family:var(--font-h);font-size:15px;font-weight:700;color:var(--text-white);margin-bottom:6px}
+        .rule-text p{font-size:13px;color:var(--text-gray);line-height:1.7}
+
+        /* ============ SKLEP ============ */
+        .shop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
+        .shop-card{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:var(--tr-med);position:relative}
+        .shop-card:hover{transform:translateY(-10px);box-shadow:0 25px 50px rgba(0,0,0,.3)}
+        .shop-popular{position:absolute;top:15px;right:15px;padding:6px 14px;border-radius:20px;font-size:10px;font-weight:600;color:var(--text-white);text-transform:uppercase;letter-spacing:1px;z-index:2}
+        .shop-header{padding:30px 25px 0;text-align:center}
+        .shop-icon{width:65px;height:65px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--text-white);margin:0 auto 18px;transition:var(--tr-fast)}
+        .shop-card:hover .shop-icon{transform:scale(1.1)}
+        .shop-name{font-family:var(--font-h);font-size:22px;font-weight:700;color:var(--text-white);margin-bottom:8px}
+        .shop-price{font-family:var(--font-h);font-size:34px;font-weight:800;margin-bottom:3px}
+        .shop-price small{font-size:14px;color:var(--text-gray);font-weight:400}
+        .shop-period{font-size:12px;color:var(--text-gray);margin-bottom:18px}
+        .shop-features{padding:0 25px 25px;display:flex;flex-direction:column;gap:10px}
+        .shop-feature{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-gray)}
+        .shop-feature i.fa-check{width:16px;text-align:center}
+        .shop-feature.disabled{opacity:.35}
+        .shop-feature.disabled i{color:var(--text-dark)!important}
+        .shop-btn{margin:0 25px 25px;padding:14px;border-radius:10px;color:var(--text-white);font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:var(--tr-fast);width:calc(100% - 50px)}
+        .shop-btn:hover{transform:translateY(-2px)}
+
+        /* Card colors */
+        .shop-card.bronze{border-color:rgba(205,127,50,.3)}
+        .shop-card.bronze:hover{border-color:rgba(205,127,50,.6);box-shadow:0 25px 50px rgba(0,0,0,.3),0 0 20px rgba(205,127,50,.2)}
+        .shop-card.bronze .shop-icon{background:linear-gradient(135deg,#cd7f32,#a0522d)}
+        .shop-card.bronze .shop-price{color:#cd7f32}
+        .shop-card.bronze .shop-feature i.fa-check{color:#cd7f32}
+        .shop-card.bronze .shop-btn{background:linear-gradient(135deg,#cd7f32,#a0522d);box-shadow:0 0 15px rgba(205,127,50,.4)}
+        .shop-card.bronze .shop-btn:hover{box-shadow:0 0 30px rgba(205,127,50,.6)}
+
+        .shop-card.silver{border-color:rgba(192,192,192,.3)}
+        .shop-card.silver:hover{border-color:rgba(192,192,192,.6);box-shadow:0 25px 50px rgba(0,0,0,.3),0 0 20px rgba(192,192,192,.2)}
+        .shop-card.silver .shop-icon{background:linear-gradient(135deg,#c0c0c0,#808080)}
+        .shop-card.silver .shop-price{color:#c0c0c0}
+        .shop-card.silver .shop-feature i.fa-check{color:#c0c0c0}
+        .shop-card.silver .shop-btn{background:linear-gradient(135deg,#c0c0c0,#808080);box-shadow:0 0 15px rgba(192,192,192,.4)}
+        .shop-card.silver .shop-btn:hover{box-shadow:0 0 30px rgba(192,192,192,.6)}
+
+        .shop-card.gold{border-color:rgba(255,215,0,.3)}
+        .shop-card.gold:hover{border-color:rgba(255,215,0,.6);box-shadow:0 25px 50px rgba(0,0,0,.3),0 0 20px rgba(255,215,0,.2)}
+        .shop-card.gold .shop-popular{background:linear-gradient(135deg,#ffd700,#ff8c00)}
+        .shop-card.gold .shop-icon{background:linear-gradient(135deg,#ffd700,#ff8c00)}
+        .shop-card.gold .shop-price{color:#ffd700}
+        .shop-card.gold .shop-feature i.fa-check{color:#ffd700}
+        .shop-card.gold .shop-btn{background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;box-shadow:0 0 15px rgba(255,215,0,.4)}
+        .shop-card.gold .shop-btn:hover{box-shadow:0 0 30px rgba(255,215,0,.6)}
+
+        .shop-card.diamond{border-color:rgba(0,200,255,.3)}
+        .shop-card.diamond:hover{border-color:rgba(0,200,255,.6);box-shadow:0 25px 50px rgba(0,0,0,.3),0 0 20px rgba(0,200,255,.2)}
+        .shop-card.diamond .shop-icon{background:linear-gradient(135deg,#00c8ff,#0080ff)}
+        .shop-card.diamond .shop-price{color:#00c8ff}
+        .shop-card.diamond .shop-feature i.fa-check{color:#00c8ff}
+        .shop-card.diamond .shop-btn{background:linear-gradient(135deg,#00c8ff,#0080ff);box-shadow:0 0 15px rgba(0,200,255,.4)}
+        .shop-card.diamond .shop-btn:hover{box-shadow:0 0 30px rgba(0,200,255,.6)}
+
+        .shop-card.ruby{border-color:rgba(var(--accent-rgb),.3)}
+        .shop-card.ruby:hover{border-color:rgba(var(--accent-rgb),.6);box-shadow:0 25px 50px rgba(0,0,0,.3),0 0 20px rgba(var(--accent-rgb),.2)}
+        .shop-card.ruby .shop-popular{background:linear-gradient(135deg,var(--accent),#042de2)}
+        .shop-card.ruby .shop-icon{background:linear-gradient(135deg,var(--accent),#0051ff)}
+        .shop-card.ruby .shop-price{color:var(--accent)}
+        .shop-card.ruby .shop-feature i.fa-check{color:var(--accent)}
+        .shop-card.ruby .shop-btn{background:linear-gradient(135deg,var(--accent),#007dc5);box-shadow:0 0 15px rgba(var(--accent-rgb),.4)}
+        .shop-card.ruby .shop-btn:hover{box-shadow:0 0 30px rgba(var(--accent-rgb),.6)}
+
+        /* ============ SYSTEMS ============ */
+        .systems-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:20px}
+        .system-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:28px;display:flex;gap:20px;transition:var(--tr-med);position:relative;overflow:hidden}
+        .system-card::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--accent),transparent);transform:scaleX(0);transform-origin:left;transition:var(--tr-med)}
+        .system-card:hover{transform:translateY(-6px);border-color:var(--border-hover);box-shadow:0 20px 40px rgba(0,0,0,.3),0 0 15px rgba(var(--accent-rgb),.1)}
+        .system-card:hover::after{transform:scaleX(1)}
+        .system-icon{flex-shrink:0;width:55px;height:55px;background:rgba(var(--accent-rgb),.1);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--accent);transition:var(--tr-fast)}
+        .system-card:hover .system-icon{transform:scale(1.1) rotate(5deg);box-shadow:var(--glow-sm)}
+        .system-content{flex:1}
+        .system-title{font-family:var(--font-h);font-size:18px;font-weight:700;color:var(--text-white);margin-bottom:6px}
+        .system-description{font-size:13px;color:var(--text-gray);line-height:1.7;margin-bottom:10px}
+        .system-tags{display:flex;flex-wrap:wrap;gap:6px}
+        .system-tag{padding:4px 12px;background:rgba(var(--accent-rgb),.08);border-radius:16px;font-size:10px;font-weight:500;color:var(--accent);text-transform:uppercase}
+
+        /* ============ TEAM ============ */
+        .team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
+        .team-card{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:38px 28px;text-align:center;transition:var(--tr-med);position:relative;overflow:hidden}
+        .team-card::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:50%;height:3px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:var(--tr-fast)}
+        .team-card:hover{transform:translateY(-8px);border-color:var(--border-hover);box-shadow:0 20px 40px rgba(0,0,0,.3),0 0 12px rgba(var(--accent-rgb),.1)}
+        .team-card:hover::before{opacity:1}
+        .team-avatar{width:110px;height:110px;margin:0 auto 20px;border-radius:50%;overflow:hidden;border:3px solid transparent;background:linear-gradient(var(--bg-dark),var(--bg-dark)) padding-box,linear-gradient(135deg,var(--accent),rgba(var(--accent-rgb),.3)) border-box;transition:var(--tr-fast)}
+        .team-avatar img{width:100%;height:100%;object-fit:cover;transition:var(--tr-med)}
+        .team-card:hover .team-avatar{transform:scale(1.05);box-shadow:var(--glow-md)}
+        .team-card:hover .team-avatar img{transform:scale(1.1)}
+        .team-name{font-family:var(--font-h);font-size:19px;font-weight:700;color:var(--text-white);margin-bottom:5px}
+        .team-role{font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;font-weight:600;margin-bottom:12px}
+        .team-bio{font-size:13px;color:var(--text-gray);line-height:1.6;margin-bottom:16px}
+        .team-socials{display:flex;justify-content:center;gap:8px}
+        .team-social{width:36px;height:36px;background:rgba(var(--accent-rgb),.1);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--text-gray);font-size:14px;transition:var(--tr-fast)}
+        .team-social:hover{background:var(--accent);color:var(--text-white);transform:translateY(-3px);box-shadow:var(--glow-sm)}
+
+        /* ============ HC PANEL ============ */
+        .hc-panel{display:none}
+        .hc-panel.active{display:block}
+        .hc-header-panel{background:linear-gradient(135deg,rgba(var(--accent-rgb),.15),transparent);border:1px solid var(--border);border-radius:20px;padding:30px;margin-bottom:30px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+        .hc-welcome h2{font-family:var(--font-h);font-size:26px;font-weight:700;margin-bottom:5px}
+        .hc-welcome p{color:var(--text-gray);font-size:14px}
+        .hc-badge{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:linear-gradient(135deg,var(--accent),var(--accent-light));border-radius:50px;font-size:13px;font-weight:600;color:var(--text-white);box-shadow:var(--glow-md)}
+        .hc-stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-bottom:30px}
+        .hc-stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:22px;transition:var(--tr-fast)}
+        .hc-stat-card:hover{border-color:var(--border-hover);transform:translateY(-4px)}
+        .hc-stat-icon{width:42px;height:42px;background:rgba(var(--accent-rgb),.1);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--accent);margin-bottom:12px}
+        .hc-stat-value{font-family:var(--font-h);font-size:30px;font-weight:800;color:var(--text-white);margin-bottom:3px}
+        .hc-stat-label{font-size:12px;color:var(--text-gray)}
+
+        /* ============ FOOTER ============ */
+        .footer{background:rgba(8,8,8,.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:60px 40px 25px}
+        .footer-content{max-width:1400px;margin:0 auto}
+        .footer-main{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:50px;margin-bottom:40px}
+        .footer-brand .logo{margin-bottom:18px;display:inline-block}
+        .footer-brand .logo-img{height:45px}
+        .footer-brand p{color:var(--text-gray);font-size:14px;line-height:1.7;margin-bottom:20px}
+        .footer-socials{display:flex;gap:10px}
+        .footer-social{width:42px;height:42px;background:rgba(var(--accent-rgb),.1);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--text-gray);font-size:17px;transition:var(--tr-fast)}
+        .footer-social:hover{background:var(--accent);color:var(--text-white);transform:translateY(-3px);box-shadow:var(--glow-sm)}
+        .footer-column h4{font-family:var(--font-h);font-size:13px;font-weight:700;color:var(--text-white);margin-bottom:20px;text-transform:uppercase;letter-spacing:2px}
+        .footer-links{display:flex;flex-direction:column;gap:10px}
+        .footer-link{color:var(--text-gray);font-size:13px;transition:var(--tr-fast);display:flex;align-items:center;gap:8px}
+        .footer-link:hover{color:var(--accent);transform:translateX(4px)}
+        .footer-bottom{border-top:1px solid var(--border);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+        .footer-copyright{color:var(--text-gray);font-size:12px}
+        .footer-copyright a{color:var(--accent)}
+        .footer-legal{display:flex;gap:20px}
+        .footer-legal a{color:var(--text-gray);font-size:12px;transition:var(--tr-fast)}
+        .footer-legal a:hover{color:var(--accent)}
+
+        /* Lightbox */
+        .lightbox{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.95);z-index:10000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:var(--tr-med)}
+        .lightbox.active{opacity:1;visibility:visible}
+        .lightbox-content img{max-width:90%;max-height:90vh;border-radius:12px}
+        .lightbox-close{position:absolute;top:25px;right:25px;width:45px;height:45px;background:rgba(20,20,20,.8);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text-white);font-size:22px;cursor:pointer;transition:var(--tr-fast)}
+        .lightbox-close:hover{background:var(--accent);transform:rotate(90deg)}
+
+        /* Toast */
+        .toast-container{position:fixed;top:100px;right:20px;z-index:10001;display:flex;flex-direction:column;gap:10px}
+        .toast{padding:14px 22px;border-radius:10px;color:var(--text-white);font-size:14px;font-weight:500;display:flex;align-items:center;gap:10px;animation:slideIn .3s ease;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+        .toast.success{background:var(--success)}
+        .toast.error{background:var(--danger)}
+        .toast.info{background:var(--discord-color)}
+        @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+        /* Responsive */
+        @media(max-width:1200px){.footer-main{grid-template-columns:1fr 1fr}}
+        @media(max-width:992px){
+            .nav-menu{position:fixed;top:0;right:-100%;width:100%;height:100vh;background:rgba(5,5,5,.98);backdrop-filter:blur(20px);flex-direction:column;justify-content:center;gap:28px;transition:var(--tr-med);z-index:1001}
+            .nav-menu.active{right:0}
+            .nav-link{font-size:18px}
+            .nav-cta,.nav-auth{display:none}
+            .menu-toggle{display:flex}
+            .menu-toggle.active span:nth-child(1){transform:rotate(45deg) translate(6px,6px)}
+            .menu-toggle.active span:nth-child(2){opacity:0}
+            .menu-toggle.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px)}
+            .footer-main{grid-template-columns:1fr;text-align:center}
+            .footer-socials,.footer-links{justify-content:center;align-items:center}
+            .footer-bottom{flex-direction:column;text-align:center}
+            .systems-grid{grid-template-columns:1fr}
+            .hc-header-panel{flex-direction:column;text-align:center}
+        }
+        @media(max-width:768px){
+            .section{padding:80px 20px}
+            .header .container{padding:0 20px}
+            .hero{padding:100px 20px 70px}
+            .hero-buttons{flex-direction:column;align-items:center}
+            .btn{width:100%;max-width:300px}
+            .applications-grid,.shop-grid{grid-template-columns:1fr}
+            .modal-header,.modal-body,.modal-footer{padding-left:20px;padding-right:20px}
+            .rules-tab{padding:10px 14px;font-size:10px}
+        }
+        @media(max-width:480px){.hero-title{font-size:32px}.section-title{font-size:26px}.footer-legal{flex-direction:column;gap:8px}}
+
+        ::-webkit-scrollbar{width:7px}
+        ::-webkit-scrollbar-track{background:var(--bg-dark)}
+        ::-webkit-scrollbar-thumb{background:rgba(var(--accent-rgb),.4);border-radius:10px}
+        ::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+        ::selection{background:var(--accent);color:var(--text-white)}
+
+        
+    </style>
+</head>
+<body class="loading">
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- LOADER -->
+    <div class="loader" id="loader">
+        <video class="loader-video" autoplay muted loop playsinline><source src="assets/video/loader-bg.mp4" type="video/mp4"></video>
+        <div class="loader-overlay"></div>
+        <div class="loader-particles" id="loaderParticles"></div>
+        <div class="loader-content">
+            <div>
+                <img src="assets/images/logo.png" alt="WipeRP" class="loader-logo-img">
+                <p class="loader-tagline">Nowy wymiar roleplay</p>
+            </div>
+            <div class="loader-progress-container">
+                <div class="loader-progress-bar"><div class="loader-progress-fill" id="loaderProgress"></div></div>
+                <div class="loader-progress-text"><span>Ładowanie...</span><span id="loaderPercent">0%</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="header" id="header">
+        <div class="container">
+            <a href="#hero" class="logo"><img src="assets/images/logo.png" alt="WipeRP" class="logo-img"></a>
+            <nav class="nav">
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#hero" class="nav-link">Start</a></li>
+                    <li><a href="#galeria" class="nav-link">Galeria</a></li>
+                    <li><a href="#podania" class="nav-link">Podania</a></li>
+                    <li><span class="nav-link" onclick="openRules()">Regulamin</span></li>
+                    <li><a href="#sklep" class="nav-link">Sklep</a></li>
+                    <li><a href="#systemy" class="nav-link">Systemy</a></li>
+                    <li><a href="#ekipa" class="nav-link">Ekipa</a></li>
+                </ul>
+                <div class="nav-auth" id="navAuth">
+                    <button class="nav-cta" onclick="testLogin()"><i class="fas fa-sign-in-alt"></i> Panel HC</button>
+                </div>
+                <div class="user-menu" id="userMenu">
+                    <div class="user-dropdown">
+                        <div class="user-avatar"><img src="https://cdn.discordapp.com/embed/avatars/0.png" alt="" id="userAvatarImg"></div>
+                        <div class="user-dropdown-menu">
+                            <div class="user-info"><div class="user-name" id="userName">Admin</div><div class="user-role" id="userRoleText">Zarząd</div></div>
+                            <div class="user-dropdown-item" onclick="goTo('panel-hc')"><i class="fas fa-crown"></i>Panel HC</div>
+                            <div class="user-dropdown-item danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i>Wyloguj</div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <video class="hero-video-bg" autoplay muted loop playsinline><source src="assets/video/hero-bg.mp4" type="video/mp4"></video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content" data-aos="fade-up">
+            <div class="hero-badge"><i class="fas fa-circle"></i> Serwer Online • 128 Graczy</div>
+            <h1 class="hero-title">POCZUJ KLIMAT <span class="accent">WIPERP</span></h1>
+            <p class="hero-description">Dołącz do najbardziej zaawansowanego serwera FiveM w Polsce.</p>
+            <div class="hero-buttons">
+                <a href="#podania" class="btn btn-primary"><i class="fas fa-file-alt"></i> Złóż Podanie</a>
+                <a href="#sklep" class="btn btn-secondary"><i class="fas fa-shopping-cart"></i> Sklep</a>
+                <a href="https://discord.gg/TWOJ-DISCORD" class="btn btn-discord" target="_blank"><i class="fab fa-discord"></i> Discord</a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat"><div class="hero-stat-number" data-count="15000">0</div><div class="hero-stat-label">Graczy</div></div>
+                <div class="hero-stat"><div class="hero-stat-number" data-count="500">0</div><div class="hero-stat-label">Pojazdów</div></div>
+                <div class="hero-stat"><div class="hero-stat-number" data-count="128">0</div><div class="hero-stat-label">Slotów</div></div>
+                <div class="hero-stat"><div class="hero-stat-number" data-count="99">0</div><div class="hero-stat-label">% Uptime</div></div>
+            </div>
+        </div>
+        <a href="#galeria" class="hero-scroll"><span>Przewiń</span><i class="fas fa-chevron-down"></i></a>
+    </section>
+
+    <!-- HC PANEL -->
+    <section class="section hc-panel" id="panel-hc">
+        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1920" class="section-bg" alt="">
+        <div class="section-bg-overlay"></div>
+        <div class="section-container">
+            <div class="hc-header-panel"><div class="hc-welcome"><h2>👋 Witaj, <span id="hcName">Admin</span>!</h2><p>Panel zarządzania WipeRP</p></div><div class="hc-badge"><i class="fas fa-crown"></i><span id="hcRole">Zarząd</span></div></div>
+            <div class="hc-stats-grid">
+                <div class="hc-stat-card"><div class="hc-stat-icon"><i class="fas fa-file-alt"></i></div><div class="hc-stat-value">23</div><div class="hc-stat-label">Oczekujące podania</div></div>
+                <div class="hc-stat-card"><div class="hc-stat-icon"><i class="fas fa-users"></i></div><div class="hc-stat-value">1,247</div><div class="hc-stat-label">Aktywni gracze</div></div>
+                <div class="hc-stat-card"><div class="hc-stat-icon"><i class="fas fa-gavel"></i></div><div class="hc-stat-value">8</div><div class="hc-stat-label">Aktywne bany</div></div>
+                <div class="hc-stat-card"><div class="hc-stat-icon"><i class="fas fa-server"></i></div><div class="hc-stat-value">Online</div><div class="hc-stat-label">Status serwera</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALERIA -->
+    <section class="section gallery" id="galeria">
+        <img src="https://images.unsplash.com/photo-1493238792000-8113da705763?w=1920" class="section-bg" alt="">
+        <div class="section-bg-overlay"></div>
+        <div class="section-container"><div class="section-header" data-aos="fade-up"><span class="section-label">Galeria</span><h2 class="section-title">Screenshoty z Serwera</h2></div></div>
+        <div class="swiper gallery-slider" data-aos="fade-up" style="position:relative;z-index:2">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide gallery-slide" data-img="assets/gallery/screen1.jpg"><img src="assets/gallery/screen1.jpg" alt=""><div class="gallery-slide-overlay"><h4 class="gallery-slide-title">Miasto Nocą</h4></div></div>
+                <div class="swiper-slide gallery-slide" data-img="assets/gallery/screen2.jpg"><img src="assets/gallery/screen2.jpg" alt=""><div class="gallery-slide-overlay"><h4 class="gallery-slide-title">Pojazdy Premium</h4></div></div>
+                <div class="swiper-slide gallery-slide" data-img="assets/gallery/screen3.jpg"><img src="assets/gallery/screen3.jpg" alt=""><div class="gallery-slide-overlay"><h4 class="gallery-slide-title">Akcje Policji</h4></div></div>
+                <div class="swiper-slide gallery-slide" data-img="assets/gallery/screen4.jpg"><img src="assets/gallery/screen4.jpg" alt=""><div class="gallery-slide-overlay"><h4 class="gallery-slide-title">Wyścigi</h4></div></div>
+                <div class="swiper-slide gallery-slide" data-img="assets/gallery/screen5.jpg"><img src="assets/gallery/screen5.jpg" alt=""><div class="gallery-slide-overlay"><h4 class="gallery-slide-title">Życie Nocne</h4></div></div>
+                <div class="swiper-slide gallery-slide" data-img="assets/gallery/screen6.jpg"><img src="assets/gallery/screen6.jpg" alt=""><div class="gallery-slide-overlay"><h4 class="gallery-slide-title">Terytoria</h4></div></div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <!-- PODANIA -->
+    <section class="section applications" id="podania">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920" class="section-bg" alt="">
+        <div class="section-bg-overlay"></div>
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up"><span class="section-label">Rekrutacja</span><h2 class="section-title">Podania do Frakcji</h2></div>
+            <div class="applications-grid">
+                <div class="application-card" data-aos="fade-up"><span class="application-status status-open">Otwarte</span><div class="application-icon"><i class="fas fa-shield-halved"></i></div><h3 class="application-title">Policja LSPD</h3><p class="application-description">Stań na straży prawa.</p><div class="application-meta"><div class="application-meta-item"><i class="fas fa-users"></i><span>32/45</span></div><div class="application-meta-item"><i class="fas fa-clock"></i><span>3-5 dni</span></div></div><button class="application-btn" onclick="openApp('Policja LSPD','fa-shield-halved')"><i class="fas fa-paper-plane"></i> Złóż Podanie</button></div>
+                <div class="application-card" data-aos="fade-up"><span class="application-status status-open">Otwarte</span><div class="application-icon"><i class="fas fa-truck-medical"></i></div><h3 class="application-title">EMS / Pogotowie</h3><p class="application-description">Ratuj życie mieszkańców.</p><div class="application-meta"><div class="application-meta-item"><i class="fas fa-users"></i><span>18/25</span></div><div class="application-meta-item"><i class="fas fa-clock"></i><span>2-4 dni</span></div></div><button class="application-btn" onclick="openApp('EMS / Pogotowie','fa-truck-medical')"><i class="fas fa-paper-plane"></i> Złóż Podanie</button></div>
+                <div class="application-card" data-aos="fade-up"><span class="application-status status-open">Otwarte</span><div class="application-icon"><i class="fas fa-wrench"></i></div><h3 class="application-title">Mechanicy LSC</h3><p class="application-description">Naprawiaj i tunuj pojazdy.</p><div class="application-meta"><div class="application-meta-item"><i class="fas fa-users"></i><span>12/20</span></div><div class="application-meta-item"><i class="fas fa-clock"></i><span>1-3 dni</span></div></div><button class="application-btn" onclick="openApp('Mechanicy LSC','fa-wrench')"><i class="fas fa-paper-plane"></i> Złóż Podanie</button></div>
+                <div class="application-card" data-aos="fade-up"><span class="application-status status-open">Otwarte</span><div class="application-icon"><i class="fas fa-gavel"></i></div><h3 class="application-title">Sąd / Prawnicy</h3><p class="application-description">Wymierzaj sprawiedliwość.</p><div class="application-meta"><div class="application-meta-item"><i class="fas fa-users"></i><span>8/10</span></div><div class="application-meta-item"><i class="fas fa-clock"></i><span>5-7 dni</span></div></div><button class="application-btn" onclick="openApp('Sąd / Prawnicy','fa-gavel')"><i class="fas fa-paper-plane"></i> Złóż Podanie</button></div>
+                <div class="application-card" data-aos="fade-up"><span class="application-status status-closed">Zamknięte</span><div class="application-icon"><i class="fas fa-user-secret"></i></div><h3 class="application-title">Mafia / Gangi</h3><p class="application-description">Podziemny świat miasta.</p><div class="application-meta"><div class="application-meta-item"><i class="fas fa-users"></i><span>Pełne</span></div></div><button class="application-btn disabled"><i class="fas fa-lock"></i> Niedostępne</button></div>
+                <div class="application-card" data-aos="fade-up"><span class="application-status status-open">Otwarte</span><div class="application-icon"><i class="fas fa-newspaper"></i></div><h3 class="application-title">Media / News</h3><p class="application-description">Relacjonuj wydarzenia.</p><div class="application-meta"><div class="application-meta-item"><i class="fas fa-users"></i><span>5/15</span></div><div class="application-meta-item"><i class="fas fa-clock"></i><span>1-2 dni</span></div></div><button class="application-btn" onclick="openApp('Media / News','fa-newspaper')"><i class="fas fa-paper-plane"></i> Złóż Podanie</button></div>
+                <div class="application-card" data-aos="fade-up"><span class="application-status status-open">Otwarte</span><div class="application-icon"><i class="fas fa-fire-extinguisher"></i></div><h3 class="application-title">Straż Pożarna</h3><p class="application-description">Gaś pożary i ratuj ludzi.</p><div class="application-meta"><div class="application-meta-item"><i class="fas fa-users"></i><span>6/15</span></div><div class="application-meta-item"><i class="fas fa-clock"></i><span>2-4 dni</span></div></div><button class="application-btn" onclick="openApp('Straż Pożarna','fa-fire-extinguisher')"><i class="fas fa-paper-plane"></i> Złóż Podanie</button></div>
+                <div class="application-card" data-aos="fade-up"><span class="application-status status-limited">Ograniczone</span><div class="application-icon"><i class="fas fa-taxi"></i></div><h3 class="application-title">Taxi Downtown</h3><p class="application-description">Wóź pasażerów po mieście.</p><div class="application-meta"><div class="application-meta-item"><i class="fas fa-users"></i><span>14/16</span></div></div><button class="application-btn" onclick="openApp('Taxi Downtown','fa-taxi')"><i class="fas fa-paper-plane"></i> Złóż Podanie</button></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL PODANIA -->
+    <div class="modal-overlay" id="appModal">
+        <div class="modal">
+    <button class="modal-close" onclick="closeApp()"><i class="fas fa-times"></i></button>
+    
+    <div class="modal-header">
+        <div class="modal-icon" id="mIcon"><i class="fas fa-shield-halved"></i></div>
+        <h2 class="modal-title">Podanie: <span id="mFraction">Policja</span></h2>
+    </div>
+
+    <form id="appForm">
+        <div class="modal-body">
+            <div class="modal-form-group">
+                <label class="modal-form-label">Twój Nick IC/OOC</label>
+                <input type="text" id="form-nick" class="modal-form-input" placeholder="np. Jan Kowalski / Hydra" required>
+            </div>
+            
+            <div class="modal-form-group">
+                <label class="modal-form-label">Wiek</label>
+                <input type="number" id="form-age" class="modal-form-input" placeholder="Minimum 16 lat" required>
+            </div>
+            
+            <div class="modal-form-group">
+                <label class="modal-form-label">Discord ID</label>
+                <input type="text" id="form-discord" class="modal-form-input" placeholder="np. hydra#0001" required>
+            </div>
+            
+            <div class="modal-form-group">
+                <label class="modal-form-label">Twoje Doświadczenie / O Tobie</label>
+                <textarea id="form-exp" class="modal-form-textarea" placeholder="Napisz kilka zdań o swoim doświadczeniu..." required></textarea>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="modal-btn modal-cancel-btn" onclick="closeApp()">Anuluj</button>
+            <button type="submit" class="modal-submit">
+                <i class="fas fa-paper-plane"></i> Wyślij Podanie
+            </button>
+        </div>
+    </form>
+</div>
+        </div>
+    </div>
+
+    <!-- REGULAMIN MODAL (POPUP) -->
+    <div class="modal-overlay" id="rulesModal">
+        <div class="modal wide">
+            <button class="modal-close" onclick="closeRules()"><i class="fas fa-times"></i></button>
+            <div class="modal-header"><div class="modal-icon"><i class="fas fa-book"></i></div><h2 class="modal-title">Regulamin WipeRP</h2><p class="modal-subtitle">Zapoznaj się z zasadami serwera</p></div>
+            <div class="modal-body">
+                <div class="rules-tabs">
+                    <button class="rules-tab active" onclick="switchRules('ogolne',this)"><i class="fas fa-book"></i> Ogólne</button>
+                    <button class="rules-tab" onclick="switchRules('roleplay',this)"><i class="fas fa-theater-masks"></i> Roleplay</button>
+                    <button class="rules-tab" onclick="switchRules('komunikacja',this)"><i class="fas fa-comments"></i> Komunikacja</button>
+                    <button class="rules-tab" onclick="switchRules('pojazdy',this)"><i class="fas fa-car"></i> Pojazdy</button>
+                    <button class="rules-tab" onclick="switchRules('frakcje',this)"><i class="fas fa-users-cog"></i> Frakcje</button>
+                    <button class="rules-tab" onclick="switchRules('kary',this)"><i class="fas fa-gavel"></i> Kary</button>
+                </div>
+                <div class="rules-content active" id="rules-ogolne">
+                    <div class="rule-item"><div class="rule-number">1</div><div class="rule-text"><h4>Szacunek</h4><p>Traktuj wszystkich z szacunkiem. Obrażanie i nękanie zabronione.</p></div></div>
+                    <div class="rule-item"><div class="rule-number">2</div><div class="rule-text"><h4>Zakaz cheaterstwa</h4><p>Używanie modyfikacji i exploitów = permanentny ban.</p></div></div>
+                    <div class="rule-item"><div class="rule-number">3</div><div class="rule-text"><h4>Wiek minimalny: 16 lat</h4><p>Osoby młodsze nie mogą grać na serwerze.</p></div></div>
+                    <div class="rule-item"><div class="rule-number">4</div><div class="rule-text"><h4>Jedno konto</h4><p>Multi-konta są surowo zabronione.</p></div></div>
+                    <div class="rule-item"><div class="rule-number">5</div><div class="rule-text"><h4>Zgłaszanie bugów</h4><p>Znalezione bugi należy zgłaszać, nie wykorzystywać.</p></div></div>
+                </div>
+                <div class="rules-content" id="rules-roleplay">
+                    <div class="rule-item"><div class="rule-number">1</div><div class="rule-text"><h4>Pozostawanie w roli (IC)</h4><p>Pełny roleplay. OOC na czacie IC zabronione.</p></div></div>
+                    <div class="rule-item"><div class="rule-number">2</div><div class="rule-text"><h4>Fear RP</h4><p>Odgrywaj strach gdy ktoś celuje do Ciebie z broni.</p></div></div>
+                    <div class="rule-item"><div class="rule-number">3</div><div class="rule-text"><h4>New Life Rule</h4><p>Po śmierci zapominasz wszystko. Nie wracaj na miejsce 30 min.</p></div></div>
+                    <div class="rule-item"><div class="rule-number">4</div><div class="rule-text"><h4>Metagaming</h4><p>Informacje OOC do celów IC zabronione.</p></div></div>
+                    <div class="rule-item"><div class="rule-number">5</div><div class="rule-text"><h4>RDM</h4><p>Zabijanie bez powodu RP zabronione.</p></div></div>
+                </div>
+                <div class="rules-content" id="rules-komunikacja">
+                    <div class="rule-item"><div class="rule-number">1</div><div class="rule-text"><h4>Mikrofon wymagany</h4><p>Komunikacja głosowa obowiązkowa.</p></div></div>
+                    <div class="rule-item"><div class="rule-number">2</div><div class="rule-text"><h4>Język polski</h4><p>Na serwerze obowiązuje język polski.</p></div></div>
+                    <div class="rule-item"><div class="rule-number">3</div><div class="rule-text"><h4>Zakaz spamu</h4><p>Spam na czacie i radiu zabroniony.</p></div></div>
+                </div>
+                <div class="rules-content" id="rules-pojazdy">
+                    <div class="rule-item"><div class="rule-number">1</div><div class="rule-text"><h4>Realistyczna jazda</h4><p>Jazda musi być realistyczna.</p></div></div>
+                    <div class="rule-item"><div class="rule-number">2</div><div class="rule-text"><h4>VDM</h4><p>Celowe potrącanie pojazdem zabronione.</p></div></div>
+                    <div class="rule-item"><div class="rule-number">3</div><div class="rule-text"><h4>Parkowanie</h4><p>Parkuj w wyznaczonych miejscach.</p></div></div>
+                </div>
+                <div class="rules-content" id="rules-frakcje">
+                    <div class="rule-item"><div class="rule-number">1</div><div class="rule-text"><h4>Hierarchia</h4><p>Rozkazy przełożonych są wiążące IC.</p></div></div>
+                    <div class="rule-item"><div class="rule-number">2</div><div class="rule-text"><h4>Mundury</h4><p>Sprzęt frakcyjny tylko na służbie.</p></div></div>
+                </div>
+                <div class="rules-content" id="rules-kary">
+                    <div class="rule-item"><div class="rule-number">1</div><div class="rule-text"><h4>Ostrzeżenie</h4><p>Mniejsze przewinienia.</p></div></div>
+                    <div class="rule-item"><div class="rule-number">2</div><div class="rule-text"><h4>Kick</h4><p>Powtarzające się przewinienia.</p></div></div>
+                    <div class="rule-item"><div class="rule-number">3</div><div class="rule-text"><h4>Ban czasowy</h4><p>Poważniejsze - 1 do 30 dni.</p></div></div>
+                    <div class="rule-item"><div class="rule-number">4</div><div class="rule-text"><h4>Ban permanentny</h4><p>Cheaty, exploity - na zawsze.</p></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SKLEP -->
+    <section class="section" id="sklep">
+        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1920" class="section-bg" alt="">
+        <div class="section-bg-overlay"></div>
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up"><span class="section-label">Sklep</span><h2 class="section-title">Pakiety Premium</h2><p class="section-description">Wesprzyj serwer i zyskaj unikalne korzyści.</p></div>
+            <div class="shop-grid">
+                <div class="shop-card bronze" data-aos="fade-up">
+                    <div class="shop-header"><div class="shop-icon"><i class="fas fa-medal"></i></div><h3 class="shop-name">Bronze</h3><div class="shop-price">14.99 <small>PLN</small></div><p class="shop-period">/ miesiąc</p></div>
+                    <div class="shop-features">
+                        <div class="shop-feature"><i class="fas fa-check"></i> Priorytet w kolejce</div>
+                        <div class="shop-feature"><i class="fas fa-check"></i> Tag Bronze na DC</div>
+                        <div class="shop-feature"><i class="fas fa-check"></i> +10% do wypłaty</div>
+                        <div class="shop-feature disabled"><i class="fas fa-times"></i> Unikalne pojazdy</div>
+                        <div class="shop-feature disabled"><i class="fas fa-times"></i> Własna tablica</div>
+                    </div>
+                    <button class="shop-btn"><i class="fas fa-shopping-cart"></i> Kup</button>
+                </div>
+                <div class="shop-card silver" data-aos="fade-up" data-aos-delay="80">
+                    <div class="shop-header"><div class="shop-icon"><i class="fas fa-star"></i></div><h3 class="shop-name">Silver</h3><div class="shop-price">24.99 <small>PLN</small></div><p class="shop-period">/ miesiąc</p></div>
+                    <div class="shop-features">
+                        <div class="shop-feature"><i class="fas fa-check"></i> Priorytet w kolejce</div>
+                        <div class="shop-feature"><i class="fas fa-check"></i> Tag Silver na DC</div>
+                        <div class="shop-feature"><i class="fas fa-check"></i> +20% do wypłaty</div>
+                        <div class="shop-feature"><i class="fas fa-check"></i> 3 dodatkowe garaże</div>
+                        <div class="shop-feature disabled"><i class="fas fa-times"></i> Unikalne pojazdy</div>
+                    </div>
+                    <button class="shop-btn"><i class="fas fa-shopping-cart"></i> Kup</button>
+                </div>
+                <div class="shop-card gold" data-aos="fade-up" data-aos-delay="160">
+                    <div class="shop-popular">🔥 Popularne</div>
+                    <div class="shop-header"><div class="shop-icon"><i class="fas fa-gem"></i></div><h3 class="shop-name">Gold</h3><div class="shop-price">39.99 <small>PLN</small></div><p class="shop-period">/ miesiąc</p></div>
+                    <div class="shop-features">
+                        <div class="shop-feature"><i class="fas fa-check"></i> Wszystko z Silver</div>
+                        <div class="shop-feature"><i class="fas fa-check"></i> Tag Gold na DC</div>
+                        <div class="shop-feature"><i class="fas fa-check"></i> +35% do wypłaty</div>
+                        <div class="shop-feature"><i class="fas fa-check"></i> 5 unikalnych pojazdów</div>
+                        <div class="shop-feature"><i class="fas fa-check"></i> Unikalne ubrania</div>
+                    </div>
+                    <button class="shop-btn"><i class="fas fa-shopping-cart"></i> Kup</button>
+                </div>
+                <div class="shop-card diamond" data-aos="fade-up" data-aos-delay="240">
+                    <div class="shop-header"><div class="shop-icon"><i class="fas fa-crown"></i></div><h3 class="shop-name">Diamond</h3><div class="shop-price">59.99 <small>PLN</small></div><p class="shop-period">/ miesiąc</p></div>
+                    <div class="shop-features">
+                        <div class="shop-feature"><i class="fas fa-check"></i> Wszystko z Gold</div>
+                        <div class="shop-feature"><i class="fas fa-check"></i> Tag Diamond na DC</div>
+                        <div class="shop-feature"><i class="fas fa-check"></i> +50% do wypłaty</div>
+                        <div class="shop-feature"><i class="fas fa-check"></i> 10 unikalnych pojazdów</div>
+                        <div class="shop-feature"><i class="fas fa-check"></i> Własna tablica rejestr.</div>
+                    </div>
+                    <button class="shop-btn"><i class="fas fa-shopping-cart"></i> Kup</button>
+                </div>
+                <div class="shop-card ruby" data-aos="fade-up" data-aos-delay="320">
+                    <div class="shop-popular">💎 Exclusive</div>
+                    <div class="shop-header"><div class="shop-icon"><i class="fas fa-fire"></i></div><h3 class="shop-name">Ruby</h3><div class="shop-price">99.99 <small>PLN</small></div><p class="shop-period">/ miesiąc</p></div>
+                    <div class="shop-features">
+                        <div class="shop-feature"><i class="fas fa-check"></i> Wszystko z Diamond</div>
+                        <div class="shop-feature"><i class="fas fa-check"></i> Tag Ruby na DC</div>
+                        <div class="shop-feature"><i class="fas fa-check"></i> +100% do wypłaty</div>
+                        <div class="shop-feature"><i class="fas fa-check"></i> 20 unikalnych pojazdów</div>
+                        <div class="shop-feature"><i class="fas fa-check"></i> Prywatna posiadłość</div>
+                    </div>
+                    <button class="shop-btn"><i class="fas fa-shopping-cart"></i> Kup</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SYSTEMY -->
+    <section class="section" id="systemy">
+        <img src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=1920" class="section-bg" alt="">
+        <div class="section-bg-overlay"></div>
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up"><span class="section-label">Funkcje</span><h2 class="section-title">Nasze Systemy</h2></div>
+            <div class="systems-grid">
+                <div class="system-card" data-aos="fade-up"><div class="system-icon"><i class="fas fa-briefcase"></i></div><div class="system-content"><h3 class="system-title">Praca</h3><p class="system-description">30+ zawodów z awansami.</p><div class="system-tags"><span class="system-tag">30+ Zawodów</span></div></div></div>
+                <div class="system-card" data-aos="fade-up"><div class="system-icon"><i class="fas fa-home"></i></div><div class="system-content"><h3 class="system-title">Nieruchomości</h3><p class="system-description">Kupuj i dekoruj mieszkania.</p><div class="system-tags"><span class="system-tag">Kupno</span></div></div></div>
+                <div class="system-card" data-aos="fade-up"><div class="system-icon"><i class="fas fa-car"></i></div><div class="system-content"><h3 class="system-title">Pojazdy</h3><p class="system-description">500+ pojazdów z tuningiem.</p><div class="system-tags"><span class="system-tag">500+</span></div></div></div>
+                <div class="system-card" data-aos="fade-up"><div class="system-icon"><i class="fas fa-skull"></i></div><div class="system-content"><h3 class="system-title">Gangi</h3><p class="system-description">Terytoria i wojny gangów.</p><div class="system-tags"><span class="system-tag">Terytoria</span></div></div></div>
+                <div class="system-card" data-aos="fade-up"><div class="system-icon"><i class="fas fa-heartbeat"></i></div><div class="system-content"><h3 class="system-title">Medyczny</h3><p class="system-description">Realistyczne obrażenia.</p><div class="system-tags"><span class="system-tag">EMS</span></div></div></div>
+                <div class="system-card" data-aos="fade-up"><div class="system-icon"><i class="fas fa-store"></i></div><div class="system-content"><h3 class="system-title">Biznes</h3><p class="system-description">Prowadź własny biznes.</p><div class="system-tags"><span class="system-tag">Zarządzanie</span></div></div></div>
+                <div class="system-card" data-aos="fade-up"><div class="system-icon"><i class="fas fa-phone"></i></div><div class="system-content"><h3 class="system-title">Telefon</h3><p class="system-description">Dzwoń, pisz i korzystaj z apek.</p><div class="system-tags"><span class="system-tag">SMS</span></div></div></div>
+                <div class="system-card" data-aos="fade-up"><div class="system-icon"><i class="fas fa-seedling"></i></div><div class="system-content"><h3 class="system-title">Uprawy</h3><p class="system-description">Hoduj i przetwarzaj.</p><div class="system-tags"><span class="system-tag">Farma</span></div></div></div>
+                <div class="system-card" data-aos="fade-up"><div class="system-icon"><i class="fas fa-fish"></i></div><div class="system-content"><h3 class="system-title">Wędkowanie</h3><p class="system-description">Łów ryby na targu.</p><div class="system-tags"><span class="system-tag">Relaks</span></div></div></div>
+                <div class="system-card" data-aos="fade-up"><div class="system-icon"><i class="fas fa-utensils"></i></div><div class="system-content"><h3 class="system-title">Gotowanie</h3><p class="system-description">Gotuj i prowadź restaurację.</p><div class="system-tags"><span class="system-tag">Kuchnia</span></div></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EKIPA -->
+    <section class="section team" id="ekipa">
+        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1920" class="section-bg" alt="">
+        <div class="section-bg-overlay"></div>
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up"><span class="section-label">Ekipa</span><h2 class="section-title">Nasz Zespół</h2></div>
+            <div class="team-grid">
+                <div class="team-card" data-aos="fade-up"><div class="team-avatar"><img src="assets/images/team/Nequu.png" alt=""></div><h3 class="team-name">Nequu</h3><span class="team-role">✦・Project Founder</span><p class="team-bio">Założyciel WazeRP.</p><div class="team-socials"><a href="#" class="team-social"><i class="fab fa-discord"></i></a></div></div>
+                <div class="team-card" data-aos="fade-up"><div class="team-avatar"><img src="assets/images/team/Niv.png" alt=""></div><h3 class="team-name">Niv</h3><span class="team-role">✦・Project Founder</span><p class="team-bio">Założyciel WazeRP.</p><div class="team-socials"><a href="#" class="team-social"><i class="fab fa-discord"></i></a></div></div>
+                <div class="team-card" data-aos="fade-up"><div class="team-avatar"><img src="assets/images/team/§π 𝒾𝑔𝟢𝓇 π§.png" alt=""></div><h3 class="team-name">§π 𝒾𝑔𝟢𝓇 π§</h3><span class="team-role">✦・Junior Staff</span><p class="team-bio">administracja.</p><div class="team-socials"><a href="#" class="team-social"><i class="fab fa-discord"></i></a></div></div>
+                <div class="team-card" data-aos="fade-up"><div class="team-avatar"><img src="assets/images/team/#$Λιαμεκ$#.png" alt=""></div><h3 class="team-name">#$Λιαμεκ$#</h3><span class="team-role">✦・Junior Staff</span><p class="team-bio">administracją</p><div class="team-socials"><a href="#" class="team-social"><i class="fab fa-discord"></i></a></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-main">
+                <div class="footer-brand"><a href="#hero" class="logo"><img src="assets/images/logo.png" alt="WipeRP" class="logo-img"></a><p>Najlepszy serwer FiveM RP w Polsce.</p><div class="footer-socials"><a href="#" class="footer-social"><i class="fab fa-discord"></i></a><a href="#" class="footer-social"><i class="fab fa-youtube"></i></a><a href="#" class="footer-social"><i class="fab fa-tiktok"></i></a></div></div>
+                <div class="footer-column"><h4>Nawigacja</h4><div class="footer-links"><a href="#hero" class="footer-link">Start</a><a href="#podania" class="footer-link">Podania</a><a href="#sklep" class="footer-link">Sklep</a><a href="#systemy" class="footer-link">Systemy</a></div></div>
+                <div class="footer-column"><h4>Zasoby</h4><div class="footer-links"><span class="footer-link" onclick="openRules()" style="cursor:pointer">Regulamin</span><a href="#ekipa" class="footer-link">Ekipa</a><a href="#" class="footer-link">FAQ</a></div></div>
+                <div class="footer-column"><h4>Kontakt</h4><div class="footer-links"><a href="#" class="footer-link"><i class="fab fa-discord"></i> Discord</a><a href="mailto:kontakt@wiperp.pl" class="footer-link"><i class="fas fa-envelope"></i> Email</a></div></div>
+            </div>
+            <div class="footer-bottom"><p class="footer-copyright">© 2024 <a href="#hero">WipeRP</a>. Wszystkie prawa zastrzeżone.</p><div class="footer-legal"><span onclick="openRules()" style="cursor:pointer;color:var(--text-gray);font-size:12px">Regulamin</span><a href="#">Prywatność</a></div></div>
+        </div>
+    </footer>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" onclick="document.getElementById('lightbox').classList.remove('active');document.body.style.overflow=''"><i class="fas fa-times"></i></button>
+        <div class="lightbox-content"><img id="lightboxImg" src="" alt=""></div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script>
+        // LOADER
+        const lp=document.getElementById('loaderProgress'),lt=document.getElementById('loaderPercent'),lP=document.getElementById('loaderParticles');
+        for(let i=0;i<25;i++){const p=document.createElement('div');p.className='loader-particle';p.style.left=Math.random()*100+'%';p.style.animationDelay=Math.random()*4+'s';lP.appendChild(p)}
+        let prog=0;const li=setInterval(()=>{prog+=Math.random()*15;if(prog>=100){prog=100;clearInterval(li);setTimeout(()=>{document.getElementById('loader').classList.add('hidden');document.body.classList.remove('loading')},500)}lp.style.width=prog+'%';lt.textContent=Math.floor(prog)+'%'},200);
+
+        // INIT
+        document.addEventListener('DOMContentLoaded',()=>{
+            AOS.init({duration:700,once:true,offset:40});
+            new Swiper('.gallery-slider',{slidesPerView:1,spaceBetween:18,loop:true,centeredSlides:true,autoplay:{delay:3500},pagination:{el:'.swiper-pagination',clickable:true},breakpoints:{640:{slidesPerView:2},1024:{slidesPerView:3},1400:{slidesPerView:4}}});
+            document.querySelectorAll('[data-count]').forEach(el=>{const obs=new IntersectionObserver(e=>{if(e[0].isIntersecting){let c=0;const t=parseInt(el.dataset.count),inc=t/60;const tm=setInterval(()=>{c+=inc;if(c>=t){el.textContent=t.toLocaleString();clearInterval(tm)}else el.textContent=Math.floor(c).toLocaleString()},30);obs.disconnect()}},{threshold:.5});obs.observe(el)});
+        });
+
+        // HEADER
+        window.addEventListener('scroll',()=>document.getElementById('header').classList.toggle('scrolled',pageYOffset>50));
+        const mt=document.getElementById('menuToggle'),nm=document.getElementById('navMenu');
+        mt.addEventListener('click',()=>{mt.classList.toggle('active');nm.classList.toggle('active');document.body.style.overflow=nm.classList.contains('active')?'hidden':''});
+        document.querySelectorAll('.nav-link').forEach(l=>l.addEventListener('click',()=>{mt.classList.remove('active');nm.classList.remove('active');document.body.style.overflow=''}));
+        document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth'})}));
+        function goTo(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'})}
+
+        // APPLICATION MODAL
+        const am=document.getElementById('appModal');
+        function openApp(f,ic){document.getElementById('mFraction').textContent=f;document.getElementById('mIcon').innerHTML=`<i class="fas ${ic}"></i>`;am.classList.add('active');document.body.classList.add('modal-open')}
+        function closeApp(){am.classList.remove('active');document.body.classList.remove('modal-open')}
+        am.addEventListener('click',e=>{if(e.target===am)closeApp()});
+        document.getElementById('appForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const b = this.querySelector('.modal-submit');
+    
+    const data = {
+        nick: document.getElementById('form-nick').value,
+        wiek: document.getElementById('form-age').value,
+        dc: document.getElementById('form-discord').value,
+        exp: document.getElementById('form-exp').value,
+        frakcja: document.getElementById('mFraction').textContent
+    };
+
+    b.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Wysyłanie...';
+    b.disabled = true;
+
+
+    const webhookURL = "https://discord.com/api/webhooks/1490811034167152731/DmfzrBp8kAUInDJ2PDKA4rU6MEIRxZeInLI7d4qTGA6dz-gssU5CYuKoMo85cie2BYyA";
+
+    const embed = {
+        username: "WipeRP - System Podań",
+        embeds: [{
+            title: `📩 Nowe Podanie: ${data.frakcja}`,
+            color: 2617077, 
+            fields: [
+                { name: "👤 Nick", value: data.nick, inline: true },
+                { name: "🎂 Wiek", value: data.wiek, inline: true },
+                { name: "🎮 Discord", value: data.dc, inline: true },
+                { name: "📝 Doświadczenie", value: data.exp }
+            ],
+            footer: { text: "Wysłano ze strony WipeRP" },
+            timestamp: new Date()
+        }]
+    };
+
+    try {
+        const response = await fetch(webhookURL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(embed)
+        });
+
+        if (response.ok) {
+            b.innerHTML = '<i class="fas fa-check"></i> Wysłano!';
+            b.style.background = '#2ed573';
+            setTimeout(() => {
+                closeApp();
+                this.reset();
+                b.innerHTML = '<i class="fas fa-paper-plane"></i> Wyślij';
+                b.style.background = '';
+                b.disabled = false;
+                showToast('Twoje podanie trafiło do administracji!', 'success');
+            }, 1500);
+        } else {
+            throw new Error();
+        }
+    } catch (err) {
+        showToast('Błąd! Sprawdź URL Webhooka.', 'error');
+        b.innerHTML = '<i class="fas fa-paper-plane"></i> Spróbuj ponownie';
+        b.disabled = false;
+    }
+});
+
+        // RULES MODAL (POPUP)
+        const rm=document.getElementById('rulesModal');
+        function openRules(){rm.classList.add('active');document.body.classList.add('modal-open')}
+        function closeRules(){rm.classList.remove('active');document.body.classList.remove('modal-open')}
+        rm.addEventListener('click',e=>{if(e.target===rm)closeRules()});
+        function switchRules(tab,btn){document.querySelectorAll('.rules-content').forEach(c=>c.classList.remove('active'));document.querySelectorAll('.rules-tab').forEach(t=>t.classList.remove('active'));document.getElementById('rules-'+tab).classList.add('active');if(btn)btn.classList.add('active')}
+
+        // TEST LOGIN
+        function testLogin(){const name=prompt('Wpisz nick (test logowania):');if(!name)return;localStorage.setItem('wiperp_user',JSON.stringify({name,role:'Zarząd'}));updateLogin();showToast('Zalogowano jako '+name+'!','success')}
+        function logout(){localStorage.removeItem('wiperp_user');document.getElementById('navAuth').classList.remove('hidden');document.getElementById('userMenu').classList.remove('active');document.querySelector('.hc-panel').classList.remove('active');showToast('Wylogowano!','info')}
+        function updateLogin(){const u=JSON.parse(localStorage.getItem('wiperp_user'));if(!u)return;document.getElementById('navAuth').classList.add('hidden');document.getElementById('userMenu').classList.add('active');document.getElementById('userName').textContent=u.name;document.getElementById('userRoleText').textContent=u.role;document.getElementById('hcName').textContent=u.name;document.getElementById('hcRole').textContent=u.role;document.querySelector('.hc-panel').classList.add('active')}
+        if(localStorage.getItem('wiperp_user'))updateLogin();
+
+        // LIGHTBOX
+        document.querySelectorAll('.gallery-slide').forEach(s=>s.addEventListener('click',()=>{document.getElementById('lightboxImg').src=s.dataset.img;document.getElementById('lightbox').classList.add('active');document.body.style.overflow='hidden'}));
+
+        // TOAST
+        function showToast(msg,type='info'){const c=document.getElementById('toastContainer'),t=document.createElement('div');t.className='toast '+type;t.innerHTML=`<i class="fas fa-${type==='success'?'check-circle':type==='error'?'times-circle':'info-circle'}"></i> ${msg}`;c.appendChild(t);setTimeout(()=>t.remove(),4000)}
+
+        // ESC
+        document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeApp();closeRules();document.getElementById('lightbox').classList.remove('active');document.body.classList.remove('modal-open');document.body.style.overflow=''}});
+
+        console.log('%c WipeRP ','background:linear-gradient(90deg,#28C0C7;,#ff3350);color:#fff;font-size:28px;font-weight:bold;padding:12px 25px;border-radius:8px');
+    </script>
+</body>
+</html>
