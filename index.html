@@ -879,28 +879,50 @@
 
         console.log('%c WazeRP ','background:linear-gradient(90deg,#28C0C7;,#ff3350);color:#fff;font-size:28px;font-weight:bold;padding:12px 25px;border-radius:8px');
     </script>
+
     <script>
-window.onload = () => {
-    // Sprawdzamy czy w adresie URL jest token z Discorda
-    const fragment = new URLSearchParams(window.location.hash.slice(1));
-    const accessToken = fragment.get('access_token');
+window.addEventListener('load', () => {
+    console.log("Strona załadowana, sprawdzam token...");
+    
+    // Wyciągamy parametry z hash (#)
+    const hash = window.location.hash.substring(1);
+    const params = new URLSearchParams(hash);
+    const accessToken = params.get('access_token');
 
     if (accessToken) {
-        // Jeśli jest token, ukrywamy przycisk i pokazujemy info o użytkowniku
-        document.getElementById('loginBtn').style.display = 'none';
-        document.getElementById('userInfo').style.display = 'flex';
+        console.log("Znaleziono token! Pobieram dane z Discorda...");
+        
+        // Blokujemy ekran ładowania (jeśli go masz), żeby nie zasłaniał efektu
+        const loader = document.querySelector('.loader-wrapper'); 
+        if(loader) loader.style.display = 'none';
 
         fetch('https://discord.com/api/users/@me', {
-            headers: { authorization: `Bearer ${accessToken}` },
+            headers: { authorization: `Bearer ${accessToken}` }
         })
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error("Błąd API Discorda: " + res.status);
+            return res.json();
+        })
         .then(user => {
+            console.log("Zalogowano jako:", user.username);
+            
+            // Podmiana UI
+            document.getElementById('loginBtn').style.display = 'none';
+            document.getElementById('userInfo').style.display = 'flex';
             document.getElementById('userName').innerText = user.username;
             document.getElementById('userAvatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+            
+            // Czyścimy URL bez przeładowania strony
+            window.history.replaceState({}, document.title, window.location.pathname);
         })
-        .catch(err => console.error("Błąd logowania:", err));
+        .catch(err => {
+            console.error("Szczegóły błędu:", err);
+            alert("Błąd logowania! Sprawdź konsolę (F12)");
+        });
+    } else {
+        console.log("Brak tokena w adresie URL.");
     }
-};
+});
 </script>
 </body>
 </html>
